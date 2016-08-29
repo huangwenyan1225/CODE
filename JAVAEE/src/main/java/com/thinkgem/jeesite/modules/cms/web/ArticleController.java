@@ -145,7 +145,7 @@ public class ArticleController extends BaseController {
 	@RequiresPermissions("cms:article:view")
 	@RequestMapping(value = "crawler",method = RequestMethod.GET)
 	public String crawler(HttpServletRequest request) {
-		QianQuCrawler crawler = new QianQuCrawler("depth_crawler", true,"最美");
+		QianQuCrawler crawler = new QianQuCrawler("depth_crawler", true,"最美",request);
 		crawler.setCallBack(new QianQuCrawler.CallBack()
 		{
 			@Override public void callBack(Article article, ArticleData articleData)
@@ -163,7 +163,7 @@ public class ArticleController extends BaseController {
 		{
 			e.printStackTrace();
 		}
-		return "";
+ 		return "";
 	}
 
     private List<String> getTplContent() {

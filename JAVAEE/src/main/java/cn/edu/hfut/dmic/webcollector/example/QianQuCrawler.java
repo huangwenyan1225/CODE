@@ -24,7 +24,7 @@ import cn.edu.hfut.dmic.webcollector.model.CrawlDatum;
 import cn.edu.hfut.dmic.webcollector.model.CrawlDatums;
 import cn.edu.hfut.dmic.webcollector.model.Page;
 import cn.edu.hfut.dmic.webcollector.plugin.berkeley.BerkeleyDBManager;
-import cn.edu.hfut.dmic.webcollector.plugin.berkeley.BreadthCrawler;
+import cn.edu.hfut.dmic.webcollector.plugin.ram.RamCrawler;
 import cn.edu.hfut.dmic.webcollector.util.FileUtils;
 import com.thinkgem.jeesite.modules.cms.entity.Article;
 import com.thinkgem.jeesite.modules.cms.entity.ArticleData;
@@ -33,6 +33,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -60,28 +61,29 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author hu
  */
 
-@Component public class QianQuCrawler extends BreadthCrawler
+@Component public class QianQuCrawler extends RamCrawler
 {
 
 	private final File downloadDir;
 	private AtomicInteger imageId;
-
+String attionWei="和美女一姐打嘴炮、探讨不一样姿势。微信添加朋友→公众号→搜“姿势情报局一姐”（已认证），太纯洁的，不要来";
 	public interface CallBack
 	{
 		void callBack(Article article, ArticleData articleData);
 	}
 
 	static CallBack callBack;
+	HttpServletRequest request;
 
 	public void setCallBack(CallBack callBack)
 	{
 		this.callBack = callBack;
 	}
 
-	public QianQuCrawler(String crawlPath, boolean autoParse, String keyword)
+	public QianQuCrawler(String crawlPath, boolean autoParse, String keyword, HttpServletRequest request)
 	{
-		super(crawlPath, autoParse);
-		downloadDir = new File("/file/image/");
+		this.request=request;
+		downloadDir = new File(request.getRealPath("/")+"file/image/");
 		if(!downloadDir.exists()){
 			downloadDir.mkdirs();
 		}
@@ -112,8 +114,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);
 			}
-		String path=	imageFile.getPath().replace("\\","/");
-			article.setImage(path);
+	//	String path=	imageFile.getPath().replace("\\","/");
+			article.setImage("/file/image/"+imageFileName);
 			if (callBack != null)
 			{
 				callBack.callBack(article, articleData);
@@ -123,6 +125,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 		{
 			String html = page.getHtml();
 			String content = html.substring(html.indexOf("<div class=\"contentText\">"), html.indexOf("<div id=\"SOHUCS\" >"));
+			if (content.contains(attionWei))
+			{
+				content=	content.replace(attionWei,"");
+			}
+//			Article article = new Article();
+//			article.setTitle(page.meta("Title"));
+//
+//			//    article.setLink(page.meta("link"));
+//			article.setDescription(page.meta("Description"));
+//
+//			ArticleData articleData = new ArticleData();
+//			articleData.setContent(page.meta("content"));
+//			article.setImage(page.meta("Image"));
+//			if (callBack != null)
+//			{
+//				callBack.callBack(article, articleData);
+//			}
 			CrawlDatum crawlDatum = new CrawlDatum(page.meta("Image")).meta("Title", page.meta("Title")).meta("Description", page.meta("Description")).meta("pageType", "Image").meta("content",content);
 			next.add(crawlDatum);
 
@@ -143,7 +162,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 	}
 	public void startS()
 	{
-		for (int pageNum = 1; pageNum <= 5; pageNum++)
+		for (int pageNum = 1; pageNum <= 1; pageNum++)
 		{
 			String url = null;
 			try
@@ -175,23 +194,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 						String href = webElementa.getAttribute("src");
 						String link = webElementd.getAttribute("href");
 						CrawlDatum crawlDatum = new CrawlDatum(link).meta("Title", webElementb.getText()).meta("Image", href).meta("Description", webElementc.getText()).meta("pageType", "outlink").meta("link", link);
-						QianQuCrawler crawler = new QianQuCrawler("depth_crawlerd", true, link);
+						QianQuCrawler crawler = new QianQuCrawler("bcrawlerd", true, link, request);
 						crawler.addSeed(crawlDatum);
-						//crawler.setResumable(true);
-						crawler.start(10);
+						crawler.setThreads(30);
+						crawler.start(5);
 
 					}
 				}
 			};
 			//创建一个基于伯克利DB的DBManager
-			DBManager manager = new BerkeleyDBManager("crawl");
+			DBManager manager = new BerkeleyDBManager("acrawlerd");
 			//创建一个Crawler需要有DBManager和Executor
 			Crawler crawler = new Crawler(manager, executor);
-			//crawler.setResumable(true);
+			crawler.setThreads(30);
 			crawler.addSeed(url);
 			try
 			{
-				crawler.start(10);
+				crawler.start(5);
 			}
 			catch (Exception e)
 			{
@@ -200,11 +219,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 		}
 	}
 
-	public static void main(String[] args) throws Exception
-	{
-		QianQuCrawler crawler = new QianQuCrawler("depth_crawlerd", true, "");
-		crawler.startS();
-	}
+//	public static void main(String[] args) throws Exception
+//	{
+//		QianQuCrawler crawler = new QianQuCrawler("depth_crawlerd", true, "", request);
+//		crawler.startS();
+//	}
 
 	/**
 	 * 根据关键词和页号拼接Bing搜索对应的URL
@@ -217,7 +236,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 	public static String createBingUrl(String keyword, int pageNum) throws Exception
 	{
 		keyword = URLEncoder.encode(keyword, "utf-8");
-		return String.format("http://www.qianqu.cc/index/search?q=%s&page=%s", keyword, pageNum);
+		return String.format("http://www.qianqu.cc/index/search?q=%s&page=%s", keyword, pageNum+"");
 	}
 
 }
