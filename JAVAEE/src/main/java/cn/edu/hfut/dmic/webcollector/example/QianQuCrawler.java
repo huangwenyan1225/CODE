@@ -37,8 +37,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Random;
 
 /**
  * 本教程演示了WebCollector 2.20的新特性:
@@ -65,12 +66,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 {
 
 	private final File downloadDir;
-	private AtomicInteger imageId;
-String attionWei="和美女一姐打嘴炮、探讨不一样姿势。微信添加朋友→公众号→搜“姿势情报局一姐”（已认证），太纯洁的，不要来";
+//	private AtomicInteger imageId;
+String attionWei="和美女一姐打嘴炮、探讨不一样姿势。微信添加朋友→公众号→搜“姿势情报局一姐”（已认证），太纯洁的，不要来！";
+String attionWei1="(千趣网实习美女小编微信公号——“广告系小师妹”，已认证，想看小师妹搜集的杜蕾斯趣味广告合集?想和小师妹拉家常打嘴炮、想要小师妹的私照?抓紧关注，欢迎骚扰!)";
 	public interface CallBack
 	{
 		void callBack(Article article, ArticleData articleData);
 	}
+	long waitLoadBaseTime = 3000;
+	int waitLoadRandomTime = 3000;
+	Random random = new Random(System.currentTimeMillis());
 
 	static CallBack callBack;
 	HttpServletRequest request;
@@ -82,12 +87,13 @@ String attionWei="和美女一姐打嘴炮、探讨不一样姿势。微信添�
 
 	public QianQuCrawler(String crawlPath, boolean autoParse, String keyword, HttpServletRequest request)
 	{
+	//	/uploads/image/article/big/20160630/1467257043818023932.jpg
 		this.request=request;
-		downloadDir = new File(request.getRealPath("/")+"file/image/");
+		downloadDir = new File(request.getServletContext().getRealPath("/")+"uploads/image/article/");
 		if(!downloadDir.exists()){
 			downloadDir.mkdirs();
 		}
-		computeImageId();
+//		computeImageId();
 	}
 
 	@Override public void visit(final Page page, CrawlDatums next)
@@ -107,20 +113,40 @@ String attionWei="和美女一姐打嘴炮、探讨不一样姿势。微信添�
 			//如果是图片，直接下载
 			String contentType = page.getResponse().getContentType();
 			String extensionName=contentType.split("/")[1];
-			String imageFileName=imageId.incrementAndGet()+"."+extensionName;
+			String imageFileName=System.currentTimeMillis()+"."+extensionName;
 			File imageFile=new File(downloadDir,imageFileName);
 			try {
 				FileUtils.writeFile(imageFile, page.getContent());
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);
 			}
-	//	String path=	imageFile.getPath().replace("\\","/");
-			article.setImage("/file/image/"+imageFileName);
+
+			article.setImage("/uploads/image/article/"+imageFileName);
 			if (callBack != null)
 			{
 				callBack.callBack(article, articleData);
 			}
+		}else if (pageType.equals("ImageDetail"))
+	{
+
+		//如果是图片，直接下载
+		String path=	page.meta("imagePath").replace("\\","/");
+		File		filepath = new File(request.getRealPath("/")+path);
+//		if(!filepath.exists()){
+//			filepath.mkdirs();
+//		}
+		if(!filepath.getParentFile().exists()) {
+			//如果目标文件所在的目录不存在，则创建父目录
+			filepath.getParentFile().mkdirs();
 		}
+		try {
+			filepath.createNewFile();
+			FileUtils.writeFile(filepath, page.getContent());
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
+
+	}
 		else if (pageType.equals("outlink"))
 		{
 			String html = page.getHtml();
@@ -129,45 +155,44 @@ String attionWei="和美女一姐打嘴炮、探讨不一样姿势。微信添�
 			{
 				content=	content.replace(attionWei,"");
 			}
-//			Article article = new Article();
-//			article.setTitle(page.meta("Title"));
-//
-//			//    article.setLink(page.meta("link"));
-//			article.setDescription(page.meta("Description"));
-//
-//			ArticleData articleData = new ArticleData();
-//			articleData.setContent(page.meta("content"));
-//			article.setImage(page.meta("Image"));
-//			if (callBack != null)
-//			{
-//				callBack.callBack(article, articleData);
-//			}
+			if (content.contains(attionWei1))
+			{
+				content=	content.replace(attionWei1,"");
+			}
 			CrawlDatum crawlDatum = new CrawlDatum(page.meta("Image")).meta("Title", page.meta("Title")).meta("Description", page.meta("Description")).meta("pageType", "Image").meta("content",content);
 			next.add(crawlDatum);
-
-
-		}
-	}
-	public void computeImageId(){
-		int maxId=-1;
-		for(File imageFile:downloadDir.listFiles()){
-			String fileName=imageFile.getName();
-			String idStr=fileName.split("\\.")[0];
-			int id=Integer.valueOf(idStr);
-			if(id>maxId){
-				maxId=id;
+			ArrayList<String> attrs = page.getAttrs("p img[src]", "abs:src");
+			ArrayList<String> attrss = page.getAttrs("p img[src]", "src");
+			for (int i=0;i<attrs.size();i++ )
+			{
+				crawlDatum=new CrawlDatum(attrs.get(i));
+				crawlDatum.meta("pageType","ImageDetail").meta("imagePath",attrss.get(i));
+				next.add(crawlDatum);
 			}
+
+
+
+
 		}
-		imageId=new AtomicInteger(maxId);
 	}
+//	public void computeImageId(){
+//		int maxId=-1;
+//		for(File imageFile:downloadDir.listFiles()){
+//			String fileName=imageFile.getName();
+//			String idStr=fileName.split("\\.")[0];
+//			int id=Integer.valueOf(idStr);
+//			if(id>maxId){
+//				maxId=id;
+//			}
+//		}
+//		imageId=new AtomicInteger(maxId);
+//	}
 	public void startS()
 	{
-		for (int pageNum = 1; pageNum <= 1; pageNum++)
-		{
 			String url = null;
 			try
 			{
-				url = createBingUrl("最美", pageNum);
+				url = createBingUrl("最美", 1);
 			}
 			catch (Exception e)
 			{
@@ -197,8 +222,33 @@ String attionWei="和美女一姐打嘴炮、探讨不一样姿势。微信添�
 						QianQuCrawler crawler = new QianQuCrawler("bcrawlerd", true, link, request);
 						crawler.addSeed(crawlDatum);
 						crawler.setThreads(30);
-						crawler.start(5);
+						crawler.start(1);
 
+					}
+					for(int i=2; i<14; i++) {
+						//滚动加载下一页
+						driver.findElement(By.cssSelector("a.page-link.next")).click();
+						//等待页面动态加载完毕
+						Thread.sleep(waitLoadBaseTime+random.nextInt(waitLoadRandomTime));
+						WebElement element2 = driver.findElementByCssSelector("div#mainContent");
+						List<WebElement> elementss2 = element2.findElements(By.cssSelector("div.article"));
+
+						for (WebElement element0 : elementss2)
+						{
+							WebElement webElementa = element0.findElement(By.cssSelector("img"));
+							WebElement webElementb = element0.findElement(By.cssSelector("h3 a"));
+							WebElement webElementc = element0.findElement(By.cssSelector("p"));
+							WebElement webElementd = element0.findElement(By.cssSelector("a"));
+							String href = webElementa.getAttribute("src");
+							String link = webElementd.getAttribute("href");
+							CrawlDatum crawlDatum = new CrawlDatum(link).meta("Title", webElementb.getText()).meta("Image", href).meta("Description", webElementc.getText()).meta("pageType", "outlink").meta("link", link);
+							QianQuCrawler crawler = new QianQuCrawler("bcrawlerd", true, link, request);
+							crawler.addSeed(crawlDatum);
+							crawler.setThreads(30);
+							crawler.start(5);
+
+						}
+						Thread.sleep(waitLoadBaseTime+random.nextInt(waitLoadRandomTime));
 					}
 				}
 			};
@@ -210,13 +260,13 @@ String attionWei="和美女一姐打嘴炮、探讨不一样姿势。微信添�
 			crawler.addSeed(url);
 			try
 			{
-				crawler.start(5);
+				crawler.start(1);
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
-		}
+
 	}
 
 //	public static void main(String[] args) throws Exception

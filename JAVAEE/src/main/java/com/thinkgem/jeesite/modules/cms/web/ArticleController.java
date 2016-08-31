@@ -143,7 +143,7 @@ public class ArticleController extends BaseController {
 	 * 通过编号获取文章标题
 	 */
 	@RequiresPermissions("cms:article:view")
-	@RequestMapping(value = "crawler",method = RequestMethod.GET)
+	@RequestMapping(value = "aa",method = RequestMethod.GET)
 	public String crawler(HttpServletRequest request) {
 		QianQuCrawler crawler = new QianQuCrawler("depth_crawler", true,"最美",request);
 		crawler.setCallBack(new QianQuCrawler.CallBack()
