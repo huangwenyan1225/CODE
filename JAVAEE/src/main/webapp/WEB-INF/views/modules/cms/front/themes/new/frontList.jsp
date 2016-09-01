@@ -30,7 +30,7 @@
         <h4>${category.name}</h4>
         <c:if test="${category.module eq 'article'}">
             <ul><c:forEach items="${page.list}" var="article">
-                <li> <div class="ccc">
+                <li> <div class="articles">
                     <a href="${article.url}" target="_blank" class="img"><img src="${article.image}" width="148" height="97"></a>
 
                     <div class="article_right" >

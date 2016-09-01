@@ -17,13 +17,24 @@
     </div>
     <div class="row">
       <div class="span4">
-        <h4><small><a href="${ctx}/list-2${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>组织机构</h4>
+        <h4><small><a href="${ctx}/list-2${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>今日最美</h4>
 		<ul><c:forEach items="${fnc:getArticleList(site.id, 2, 8, '')}" var="article">
+            <li> <div class="articles">
+                <a href="${article.url}" target="_blank" class="img"><img src="${article.image}" width="148" height="97"></a>
+
+                <div class="article_right" >
+                    <h3><a href="${article.url}" target="_blank" style="color:${article.color}">${fns:abbr(article.title,96)}</a></h3>
+                    <p>${article.description}</p>
+                </div>
+            </div>
+            <li>
+<%--
 			<li><span class="pull-right"><fmt:formatDate value="${article.updateDate}" pattern="yyyy.MM.dd"/></span><a href="${article.url}" style="color:${article.color}">${fns:abbr(article.title,28)}</a></li>
+--%>
 		</c:forEach></ul>
       </div>
       <div class="span4">
-        <h4> <small><a href="${ctx}/list-6${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>质量监督</h4>
+        <h4> <small><a href="${ctx}/list-6${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>今日最萌</h4>
 		<ul><c:forEach items="${fnc:getArticleList(site.id, 6, 8, '')}" var="article">
 			<li><span class="pull-right"><fmt:formatDate value="${article.updateDate}" pattern="yyyy.MM.dd"/></span><a href="${article.url}" style="color:${article.color}">${fns:abbr(article.title,28)}</a></li>
 		</c:forEach></ul>
