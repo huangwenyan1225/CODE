@@ -192,7 +192,7 @@ String attionWei1="(千趣网实习美女小编微信公号——“广告系小
 			String url = null;
 			try
 			{
-				url = createBingUrl("最美", 1);
+				url = createBingUrl("最萌", 1);
 			}
 			catch (Exception e)
 			{
@@ -225,7 +225,7 @@ String attionWei1="(千趣网实习美女小编微信公号——“广告系小
 						crawler.start(1);
 
 					}
-					for(int i=2; i<14; i++) {
+					for(int i=2; i<3; i++) {
 						//滚动加载下一页
 						driver.findElement(By.cssSelector("a.page-link.next")).click();
 						//等待页面动态加载完毕

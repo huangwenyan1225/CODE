@@ -145,12 +145,12 @@ public class ArticleController extends BaseController {
 	@RequiresPermissions("cms:article:view")
 	@RequestMapping(value = "aa",method = RequestMethod.GET)
 	public String crawler(HttpServletRequest request) {
-		QianQuCrawler crawler = new QianQuCrawler("depth_crawler", true,"最美",request);
+		QianQuCrawler crawler = new QianQuCrawler("depth_crawler", true,"最萌",request);
 		crawler.setCallBack(new QianQuCrawler.CallBack()
 		{
 			@Override public void callBack(Article article, ArticleData articleData)
 			{
-				article.setCategory(categoryService.get("3"));
+				article.setCategory(categoryService.get("11"));
 				article.setArticleData(articleData);
 				articleService.save(article);
 			}

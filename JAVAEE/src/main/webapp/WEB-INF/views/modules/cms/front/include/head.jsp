@@ -11,5 +11,13 @@
 	<link href="${ctxStatic}/common/jeesite.min.css" type="text/css" rel="stylesheet" />
 	<link href="${ctxStaticTheme}/style.css" type="text/css" rel="stylesheet" />
 	<script src="${ctxStaticTheme}/script.js" type="text/javascript"></script>
-<%--
+
+
+<%--</c:if>
+<c:if test="${site.theme eq 'new'}">
+<link href="${ctxStatic}/bootstrap/3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/bootstrap/3.3.0/js/bootstrap.min.js" type="text/javascript"></script>
+	<link href="${ctxStatic}/common/jeesite.min.css" type="text/css" rel="stylesheet" />
+	<link href="${ctxStaticTheme}/style.css" type="text/css" rel="stylesheet" />
+	<script src="${ctxStaticTheme}/script.js" type="text/javascript"></script>
 </c:if>--%>

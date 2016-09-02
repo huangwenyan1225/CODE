@@ -16,14 +16,16 @@
       <p><a href="${article.url}" class="btn btn-primary btn-large">&nbsp;&nbsp;&nbsp;查看详情 &raquo;&nbsp;&nbsp;&nbsp;</a></p>
     </div>
     <div class="row">
-      <div class="span4">
+      <div class="col-xs-6 col-sm-3 col-md-4 col-lg-4">
         <h4><small><a href="${ctx}/list-2${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>今日最美</h4>
 		<ul><c:forEach items="${fnc:getArticleList(site.id, 2, 8, '')}" var="article">
-            <li> <div class="articles">
-                <a href="${article.url}" target="_blank" class="img"><img src="${article.image}" width="148" height="97"></a>
-
-                <div class="article_right" >
-                    <h3><a href="${article.url}" target="_blank" style="color:${article.color}">${fns:abbr(article.title,96)}</a></h3>
+            <li>  <div class="media">
+                <a class="pull-left" href="${article.url}">
+                    <img class="media-object" src="${article.image}"
+                    >
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading"><a href="${article.url}" target="_blank" style="color:${article.color}">${fns:abbr(article.title,96)}</a></h4>
                     <p>${article.description}</p>
                 </div>
             </div>
@@ -33,14 +35,14 @@
 --%>
 		</c:forEach></ul>
       </div>
-      <div class="span4">
+      <div class="col-xs-6 col-sm-3 col-md-4 col-lg-4">
         <h4> <small><a href="${ctx}/list-6${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>今日最萌</h4>
 		<ul><c:forEach items="${fnc:getArticleList(site.id, 6, 8, '')}" var="article">
 			<li><span class="pull-right"><fmt:formatDate value="${article.updateDate}" pattern="yyyy.MM.dd"/></span><a href="${article.url}" style="color:${article.color}">${fns:abbr(article.title,28)}</a></li>
 		</c:forEach></ul>
       </div>
-      <div class="span4">
-        <h4><small><a href="${ctx}/list-10${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>政策法规</h4>
+      <div class="col-xs-6 col-sm-3 col-md-4 col-lg-4">
+        <h4><small><a href="${ctx}/list-10${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>最有趣</h4>
 		<ul><c:forEach items="${fnc:getArticleList(site.id, 10, 8, '')}" var="article">
 			<li><span class="pull-right"><fmt:formatDate value="${article.updateDate}" pattern="yyyy.MM.dd"/></span><a href="${article.url}" style="color:${article.color}">${fns:abbr(article.title,28)}</a></li>
 		</c:forEach></ul>
