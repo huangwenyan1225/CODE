@@ -16,7 +16,7 @@
     <p>${fns:abbr(fns:replaceHtml(article.articleData.content),260)}</p>
     <p><a href="${article.url}" class="btn btn-primary btn-large">&nbsp;&nbsp;&nbsp;查看详情 &raquo;&nbsp;&nbsp;&nbsp;</a></p>
 </div>--%>
-<div id="myCarousel" class="carousel slide" style="padding-bottom:45px;margin:10px 0;">
+<div id="myCarousel" class="carousel slide" style="padding-bottom:15px;margin:10px 0;">
     <!-- 轮播（Carousel）指标 -->
 
     <ol class="carousel-indicators">
@@ -26,13 +26,20 @@
         <li data-target="#myCarousel" data-slide-to="3"></li>
     </ol>
     <!-- 轮播（Carousel）项目 -->
-    <div class="carousel-inner">
+    <div class="carousel-inner center">
         <c:forEach items="${fnc:getArticleList(site.id, 2, 4, '')}" var="article" varStatus="status">
-            <div class="item ${status.index eq 0? "active":""}" style="positon:relative">
-                <img src="${article.image}" class="img-responsive" style="width: 80%;">
+            <a class="item ${status.index eq 0? "active":""}" href="${article.url}">
+                <img src="${article.image}" class="img-responsive "    style="width: 70%;margin:0 auto;">
                 <div class="carousel-caption">"${article.title}"</div>
-            </div>
+            </a>
         </c:forEach>
+        <!-- 轮播（Carousel）导航 -->
+        <a class="carousel-control left" href="#myCarousel"
+           data-slide="prev">&lsaquo;
+        </a>
+        <a class="carousel-control right" href="#myCarousel"
+           data-slide="next">&rsaquo;
+        </a>
     </div>
 
 </div>
@@ -44,7 +51,7 @@
             今日最美
         </h4>
         <ul class="media-list">
-            <c:forEach items="${fnc:getArticleList(site.id, 2, 8, '')}" var="article">
+            <c:forEach items="${fnc:getArticleList(site.id, 2, 10, '')}" var="article">
                 <li class="media pull-left">
                     <a class="pull-left" href="${article.url}">
                         <img class="media-object" src="${article.image}" alt="媒体对象">
@@ -84,7 +91,7 @@
             <small><a href="${ctx}/list-10${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>
             今日最萌
         </h4>
-        <ul class="media-list"><c:forEach items="${fnc:getArticleList(site.id, 10, 8, '')}" var="article">
+        <ul class="media-list"><c:forEach items="${fnc:getArticleList(site.id, 10, 10, '')}" var="article">
             <li class="media pull-left">
                 <a class="pull-left" href="${article.url}">
                     <img class="media-object img-responsive" src="${article.image}" alt="媒体对象">
@@ -100,14 +107,13 @@
         </c:forEach></ul>
     </div>
 </div>
-</body>
 <script>
     $(function () {
-        $('#identifier').carousel({
-            interval: 2000
-        })
+        $("#myCarousel").carousel('cycle');
     });
 
 </script>
+</body>
+
 
 </html>
