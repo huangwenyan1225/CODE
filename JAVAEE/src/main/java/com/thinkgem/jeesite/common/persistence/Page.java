@@ -3,18 +3,16 @@
  */
 package com.thinkgem.jeesite.common.persistence;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.utils.CookieUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 分页类
@@ -53,13 +51,14 @@ public class Page<T> {
 	public Page() {
 		this.pageSize = -1;
 	}
-	
+	String url;
 	/**
 	 * 构造方法
 	 * @param request 传递 repage 参数，来记住页码
 	 * @param response 用于设置 Cookie，记住页码
 	 */
 	public Page(HttpServletRequest request, HttpServletResponse response){
+
 		this(request, response, -2);
 	}
 
@@ -70,6 +69,7 @@ public class Page<T> {
 	 * @param defaultPageSize 默认分页大小，如果传递 -1 则为不分页，返回所有数据
 	 */
 	public Page(HttpServletRequest request, HttpServletResponse response, int defaultPageSize){
+		url=request.getRequestURI();
 		// 设置页码参数（传递repage参数，来记住页码）
 		String no = request.getParameter("pageNo");
 		if (StringUtils.isNumeric(no)){
@@ -118,6 +118,7 @@ public class Page<T> {
 	 * @param pageSize 分页大小
 	 */
 	public Page(int pageNo, int pageSize) {
+
 		this(pageNo, pageSize, 0);
 	}
 	
@@ -271,10 +272,13 @@ public class Page<T> {
 		sb.append("<input type=\"text\" value=\""+pageSize+"\" onkeypress=\"var e=window.event||event;var c=e.keyCode||e.which;if(c==13)");
 		sb.append(funcName+"("+pageNo+",this.value,'"+funcParam+"');\" onclick=\"this.select();\"/> 条，");
 		sb.append("共 " + count + " 条"+(message!=null?message:"")+"</a></li>\n");
+		if(url!=null&&url.contains("/a/"))
+		{
+					sb.insert(0,"<ul>\n").append("</ul>\n");
 
-		sb.insert(0,"<ul>\n").append("</ul>\n");
-		
-		sb.append("<div style=\"clear:both;\"></div>");
+					sb.append("<div style=\"clear:both;\"></div>");
+		}
+
 
 //		sb.insert(0,"<div class=\"page\">\n").append("</div>\n");
 		

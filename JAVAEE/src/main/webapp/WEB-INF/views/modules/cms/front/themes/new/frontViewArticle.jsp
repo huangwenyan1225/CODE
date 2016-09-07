@@ -25,7 +25,35 @@
 </head>
 <body>
 	<div class="row">
-	   <div class="span2">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<ul class="breadcrumb">
+				<cms:frontCurrentPosition category="${category}"/>
+			</ul>
+		</div>
+		<div class="col-xs-4 col-sm-6 col-md-10 col-lg-10">
+			<div class="row">
+				<div class="col-xs-4 col-sm-6 col-md-10 col-lg-10">
+					<h3 style="color:#555555;font-size:20px;text-align:center;border-bottom:1px solid #ddd;padding-bottom:15px;margin:25px 0;">${article.title}</h3>
+				<%--	<c:if test="${not empty article.description}"><div>摘要：${article.description}</div></c:if>--%>
+					<div>${article.articleData.content}</div>
+					<div style="border-top:1px solid #ddd;padding:10px;margin:25px 0;">发布者：${article.user.name} &nbsp; 点击数：${article.hits} &nbsp; 发布时间：<fmt:formatDate value="${article.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/> &nbsp; 更新时间：<fmt:formatDate value="${article.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
+				</div>
+			</div>
+			<div class="row">
+				<div id="comment" class="hide span10">
+					正在加载评论...
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4 col-sm-6 col-md-10 col-lg-10">
+					<h5>相关文章</h5>
+					<ol><c:forEach items="${relationList}" var="relation">
+						<li style="float:left;width:230px;"><a href="${ctx}/view-${relation[0]}-${relation[1]}${urlSuffix}">${fns:abbr(relation[2],30)}</a></li>
+					</c:forEach></ol>
+				</div>
+			</div>
+		</div>
+	   <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
 	   	 <h4>栏目列表</h4>
 		 <ol>
 		 	<cms:frontCategoryList categoryList="${categoryList}"/>
@@ -35,34 +63,8 @@
 		 	<cms:frontArticleHitsTop category="${category}"/>
 		 </ol>
 	   </div>
-	   <div class="span10">
-		 <ul class="breadcrumb">
-		    <cms:frontCurrentPosition category="${category}"/>
-		 </ul>
-	   </div>
-	   <div class="span10">
-	     <div class="row">
-	       <div class="span10">
-			<h3 style="color:#555555;font-size:20px;text-align:center;border-bottom:1px solid #ddd;padding-bottom:15px;margin:25px 0;">${article.title}</h3>
-			<c:if test="${not empty article.description}"><div>摘要：${article.description}</div></c:if>
-			<div>${article.articleData.content}</div>
-			<div style="border-top:1px solid #ddd;padding:10px;margin:25px 0;">发布者：${article.user.name} &nbsp; 点击数：${article.hits} &nbsp; 发布时间：<fmt:formatDate value="${article.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/> &nbsp; 更新时间：<fmt:formatDate value="${article.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
-  	       </div>
-  	     </div>
-	     <div class="row">
-			<div id="comment" class="hide span10">
-				正在加载评论...
-			</div>
-	     </div>
-	     <div class="row">
-	       <div class="span10">
-			<h5>相关文章</h5>
-			<ol><c:forEach items="${relationList}" var="relation">
-				<li style="float:left;width:230px;"><a href="${ctx}/view-${relation[0]}-${relation[1]}${urlSuffix}">${fns:abbr(relation[2],30)}</a></li>
-			</c:forEach></ol>
-	  	  </div>
-  	    </div>
-  	  </div>
+
+
    </div>
 </body>
 </html>

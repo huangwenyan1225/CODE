@@ -28,8 +28,8 @@
     <div class="col-xs-6 col-sm-3 col-md-6 col-lg-7">
 
         <c:if test="${category.module eq 'article'}">
-            <ul class="media-list"><c:forEach items="${page.list}" var="article">
-
+            <ul class="media-list">
+                <c:forEach items="${page.list}" var="article">
                 <li class="media pull-left">
                     <a class="pull-left" href="${article.url}">
                         <img class="media-object" src="${article.image}" alt="媒体对象">
