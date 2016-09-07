@@ -89,7 +89,8 @@ String attionWei1="(千趣网实习美女小编微信公号——“广告系小
 	{
 	//	/uploads/image/article/big/20160630/1467257043818023932.jpg
 		this.request=request;
-		downloadDir = new File(request.getServletContext().getRealPath("/")+"uploads/image/article/");
+		downloadDir = new File(request.getSession().getServletContext().getRealPath("/")+"uploads/image/article/");
+//		downloadDir = new File(request.getServletContext().getRealPath("/")+"uploads/image/article/");
 		if(!downloadDir.exists()){
 			downloadDir.mkdirs();
 		}
