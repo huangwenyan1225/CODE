@@ -40,12 +40,12 @@
 				</div>
 			</div>
 			<div class="row">
-				<div id="comment" class="hide span10">
+				<div id="comment" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					正在加载评论...
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-4 col-sm-6 col-md-10 col-lg-10">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<h5>相关文章</h5>
 					<ol><c:forEach items="${relationList}" var="relation">
 						<li style="float:left;width:230px;"><a href="${ctx}/view-${relation[0]}-${relation[1]}${urlSuffix}">${fns:abbr(relation[2],30)}</a></li>
