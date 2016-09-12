@@ -3,14 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.cms.entity;
 
-import java.util.Date;
-
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * 评论Entity
@@ -21,6 +19,7 @@ public class Comment extends DataEntity<Comment> {
 
 	private static final long serialVersionUID = 1L;
 	private Category category;// 分类编号
+	private Article article;
 	private String contentId;	// 归属分类内容的编号（Article.id、Photo.id、Download.id）
 	private String title;	// 归属分类内容的标题（Article.title、Photo.title、Download.title）
 	private String content; // 评论内容
@@ -45,8 +44,16 @@ public class Comment extends DataEntity<Comment> {
 		this();
 		this.category = category;
 	}
-	
 
+	public Article getArticle()
+	{
+		return article;
+	}
+
+	public void setArticle(Article article)
+	{
+		this.article = article;
+	}
 
 	@NotNull
 	public Category getCategory() {

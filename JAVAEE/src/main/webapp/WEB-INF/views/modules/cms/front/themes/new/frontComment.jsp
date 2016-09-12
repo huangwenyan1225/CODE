@@ -88,6 +88,7 @@
 		<input type="hidden" name="category.id" value="${comment.category.id}"/>
 		<input type="hidden" name="contentId" value="${comment.contentId}"/>
 		<input type="hidden" name="title" value="${comment.title}"/>
+		<input type="hidden" name="article.id" value="${comment.article.id}"/>
 		<input type="hidden" name="replyId"/>
 		<div class="control-group">
 			<label class="control-label">留言内容:</label>
