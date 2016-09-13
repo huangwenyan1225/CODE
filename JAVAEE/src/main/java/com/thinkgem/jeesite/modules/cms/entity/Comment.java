@@ -19,7 +19,6 @@ public class Comment extends DataEntity<Comment> {
 
 	private static final long serialVersionUID = 1L;
 	private Category category;// 分类编号
-	private Article article;
 	private String contentId;	// 归属分类内容的编号（Article.id、Photo.id、Download.id）
 	private String title;	// 归属分类内容的标题（Article.title、Photo.title、Download.title）
 	private String content; // 评论内容
@@ -45,15 +44,6 @@ public class Comment extends DataEntity<Comment> {
 		this.category = category;
 	}
 
-	public Article getArticle()
-	{
-		return article;
-	}
-
-	public void setArticle(Article article)
-	{
-		this.article = article;
-	}
 
 	@NotNull
 	public Category getCategory() {

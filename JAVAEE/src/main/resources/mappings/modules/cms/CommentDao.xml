@@ -8,7 +8,6 @@
 		a.content_id AS "contentId",
 		a.title AS "title",
 		a.content AS "content",
-		a.article_id AS "article.id",
 		a.name AS "name",
 		a.ip AS "ip",
 		a.create_date AS "createDate",
@@ -35,6 +34,9 @@
 		<include refid="cmsCommentDaoJoins"/>
 		<where>
 			a.del_flag = #{delFlag}
+			<if test="contentId != null and contentId != ''">
+				AND a.content_id=#{contentId}
+			</if>
 			<if test="title != null and title != ''">
 				AND a.title LIKE 
 					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
@@ -75,7 +77,6 @@
 			id,
 			category_id,
 			content_id,
-			article_id,
 			title,
 			content,
 			name,
@@ -89,7 +90,6 @@
 			#{category.id},
 			#{contentId},
 			#{title},
-			#{article.id},
 			#{content},
 			#{name},
 			#{ip},
@@ -106,7 +106,6 @@
 			category_id = #{category.id},
 			content_id = #{contentId},
 			title = #{title},
-			article_id = #{article.id},
 			content = #{content},
 			name = #{name},
 			ip = #{ip},
