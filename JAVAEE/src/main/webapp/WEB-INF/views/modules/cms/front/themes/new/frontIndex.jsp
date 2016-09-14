@@ -46,8 +46,8 @@
 
 <div class="row">
     <div class="col-xs-6 col-sm-3 col-md-6 col-lg-6">
-        <h4>
-            <small><a href="${ctx}/list-2${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>
+        <h4 class="title">
+            <small><a href="${ctx}/list-2${urlSuffix}" class="pull-right" style="color: white">更多&gt;&gt;</a></small>
             今日最美
         </h4>
         <ul class="media-list">
@@ -57,12 +57,11 @@
                         <img class="media-object" src="${article.image}" alt="媒体对象">
                     </a>
                     <div class="media-body ">
-                        <h4 class="media-heading"><a href="${article.url}" target="_blank" style="color:${article.color}">${fns:abbr(article.title,96)}</a></h4>
+                        <h4 class="media-heading"><a href="${article.url}" target="_blank" >${fns:abbr(article.title,96)}</a></h4>
                         <p> ${article.description}</p>
                     </div>
                 </li>
-                <%--
-                            <li><span class="pull-right"><fmt:formatDate value="${article.updateDate}" pattern="yyyy.MM.dd"/></span><a href="${article.url}" style="color:${article.color}">${fns:abbr(article.title,28)}</a></li>
+                <%--style="color:${article.color}"
                 --%>
             </c:forEach></ul>
     </div>
@@ -87,8 +86,8 @@
         </c:forEach></ul>
     </div>--%>
     <div class="col-xs-6 col-sm-3 col-md-6 col-lg-6">
-        <h4>
-            <small><a href="${ctx}/list-10${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>
+        <h4 class="title">
+            <small><a href="${ctx}/list-10${urlSuffix}" class="pull-right" style="color: white">更多&gt;&gt;</a></small>
             今日最萌
         </h4>
         <ul class="media-list"><c:forEach items="${fnc:getArticleList(site.id, 10, 10, '')}" var="article">
@@ -97,15 +96,15 @@
                     <img class="media-object img-responsive" src="${article.image}" alt="媒体对象">
                 </a>
                 <div class="media-body ">
-                    <h4 class="media-heading"><a href="${article.url}" target="_blank" style="color:${article.color}">${fns:abbr(article.title,96)}</a></h4>
+                    <h4 class="media-heading"><a href="${article.url}" target="_blank" >${fns:abbr(article.title,96)}</a></h4>
                     <p> ${article.description}</p>
                 </div>
             </li>
         </c:forEach></ul>
     </div>
-    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-6">
-        <h4>
-            <small><a href="${ctx}/list-10${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>
+    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-6" STYLE="padding-top: 20px">
+        <h4 class="title">
+            <small><a href="${ctx}/list-10${urlSuffix}" class="pull-right" style="color: white">更多&gt;&gt;</a></small>
             今日最动听
         </h4>
         <ul class="media-list"><c:forEach items="${fnc:getArticleList(site.id, 10, 10, '')}" var="article">
@@ -114,15 +113,15 @@
                     <img class="media-object img-responsive" src="${article.image}" alt="媒体对象">
                 </a>
                 <div class="media-body ">
-                    <h4 class="media-heading"><a href="${article.url}" target="_blank" style="color:${article.color}">${fns:abbr(article.title,96)}</a></h4>
+                    <h4 class="media-heading"><a href="${article.url}" target="_blank" >${fns:abbr(article.title,96)}</a></h4>
                     <p> ${article.description}</p>
                 </div>
             </li>
         </c:forEach></ul>
     </div>
-    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-6">
-        <h4>
-            <small><a href="${ctx}/list-10${urlSuffix}" class="pull-right">更多&gt;&gt;</a></small>
+    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-6" STYLE="padding-top: 20px">
+        <h4 class="title">
+            <small><a href="${ctx}/list-10${urlSuffix}" class="pull-right" style="color: white">更多&gt;&gt;</a></small>
             今日最热门
         </h4>
         <ul class="media-list"><c:forEach items="${fnc:getArticleList(site.id, 10, 10, '')}" var="article">
@@ -131,7 +130,7 @@
                     <img class="media-object img-responsive" src="${article.image}" alt="媒体对象">
                 </a>
                 <div class="media-body ">
-                    <h4 class="media-heading"><a href="${article.url}" target="_blank" style="color:${article.color}">${fns:abbr(article.title,96)}</a></h4>
+                    <h4 class="media-heading"><a href="${article.url}" target="_blank" >${fns:abbr(article.title,96)}</a></h4>
                     <p> ${article.description}</p>
                 </div>
             </li>
